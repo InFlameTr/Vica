@@ -87,6 +87,7 @@ def generate_quote():
             else:
                 continue  # Benzerse tekrar üret
 
+        print("💾Söz Dosyadan Alındı")
         return get_random_quote_from_file()
 
     except Exception as e:
