@@ -8,6 +8,12 @@ genai.configure(api_key=API_KEY)
 
 # Temalar ve örnek sözler
 themes = ["azim", "başarı", "sabır", "öz disiplin", "kendine güven", "korku", "başarısızlıkla başa çıkma"]
+styles = [
+    "şiirsel", "özlü söz gibi", "bilge bir mentor gibi", "gizemli", "yazar gibi", "keskin ve kısa"
+]
+formats = [
+    "1 cümlelik motivasyon", "vecize", "instagram gönderisi gibi", "minimal", "hikayevari"
+]
 example_quotes = [
     "Başarı, çekilen acıların gölgesinde büyür.",
     "Sana ve hayallerine inanacak birini bul.",
@@ -61,7 +67,10 @@ def generate_quote():
 
     for attempt in range(5):  # En fazla 5 deneme
         theme = random.choice(themes)
-        prompt = f"'{theme}' temalı, yaratıcı, klişe olmayan ve özgün bir motivasyon sözü üret. Maksimum 20 kelime olsun.\n"
+        style = random.choice(styles)
+        format_type = random.choice(formats)
+        prompt = f"{theme} temalı, {style} bir tarzda, {format_type} olacak şekilde ÖZGÜN ve kısa bir motivasyon sözü üret. "
+        f"Klişe olmasın. Daha önce görülmemiş gibi hissettirsin."
         prompt += "\n".join([f"- {quote}" for quote in example_quotes])
 
         response = model.generate_content(prompt)
