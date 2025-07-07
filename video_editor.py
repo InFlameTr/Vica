@@ -6,7 +6,7 @@ import textwrap
 import numpy as np
 
 def add_text_to_video(video_path, output_path, text,
-                      font_path=r"C:/Users/PC/OneDrive/Masaüstü/VidCreatorApp/fonts/RedHatDisplay-Italic-VariableFont_wght.ttf",
+                      font_path=os.path.join("fonts", "RedHatDisplay-Italic-VariableFont_wght.ttf"),
                       max_font_size=120, min_font_size=20,
                       max_width_ratio=0.8,
                       max_height_ratio=0.3,
