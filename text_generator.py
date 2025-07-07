@@ -91,6 +91,7 @@ def generate_quote():
 
     except Exception as e:
         if "429" in str(e):  # kotayı aşarsa
+            print("💾Söz Dosyadan Alındı")
             return get_random_quote_from_file()
         return "Söz üretilemedi, lütfen tekrar deneyin."
 
