@@ -4,6 +4,7 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
 import numpy as np
+import os
 
 def add_text_to_video(video_path, output_path, text,
                       font_path=os.path.join("fonts", "RedHatDisplay-Italic-VariableFont_wght.ttf"),
