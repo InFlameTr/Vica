@@ -87,12 +87,12 @@ def generate_quote():
             else:
                 continue  # Benzerse tekrar üret
 
-        print("💾Söz Dosyadan Alındı")
+        
         return get_random_quote_from_file()
 
     except Exception as e:
         if "429" in str(e):  # kotayı aşarsa
-            print("💾Söz Dosyadan Alındı")
+            
             return get_random_quote_from_file()
         return "Söz üretilemedi, lütfen tekrar deneyin."
 
@@ -114,7 +114,7 @@ def get_random_quote_from_file():
     # Güncellenmiş listeyi dosyaya geri yaz
     with open(REQUOTES_FILE, "w", encoding="utf-8") as f:
         f.writelines(lines)
-    
+    print("💾Söz Dosyadan Alındı")
     return chosen
 
 
