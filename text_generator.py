@@ -30,6 +30,7 @@ example_quotes = [
     'Sessizliği zayıflıkla karıştırmayın zeki insanlar yüksek sesle plan yapmaz.'
 ]
 
+REQUOTES_FILE = "requotes.txt"
 QUOTES_FILE = "quotes.txt"
 MAX_QUOTES = 15
 
@@ -63,29 +64,57 @@ def add_quote(new_quote):
 
 # Ana söz üretme fonksiyonu
 def generate_quote():
-    model = genai.GenerativeModel(model_name="models/gemini-1.5-flash")
+    try:
+        model = genai.GenerativeModel(model_name="models/gemini-1.5-flash")
 
-    for attempt in range(5):  # En fazla 5 deneme
-        theme = random.choice(themes)
-        style = random.choice(styles)
-        format_type = random.choice(formats)
-        prompt = prompt = f"""
-        '{theme}' temalı, {style} bir tarzda, {format_type} olacak şekilde ÖZGÜN, KISA ve NET bir motivasyon sözü üret.
-        Lütfen sadece TEK CÜMLE olsun ve 20 kelimeden uzun olmasın.
-        Klişe olmasın, yaratıcı olsun.
-        """
+        for attempt in range(5):  # En fazla 5 deneme
+            theme = random.choice(themes)
+            style = random.choice(styles)
+            format_type = random.choice(formats)
+            prompt = prompt = f"""
+            '{theme}' temalı, {style} bir tarzda, {format_type} olacak şekilde ÖZGÜN, KISA ve NET bir motivasyon sözü üret.
+            Lütfen sadece TEK CÜMLE olsun ve 20 kelimeden uzun olmasın.
+            Klişe olmasın, yaratıcı olsun.
+            """
 
-        prompt += "\n".join([f"- {quote}" for quote in example_quotes])
+            prompt += "\n".join([f"- {quote}" for quote in example_quotes])
 
-        response = model.generate_content(prompt)
-        quote = response.text.strip() if response.text else "Söz üretilemedi."
+            response = model.generate_content(prompt)
+            quote = response.text.strip() if response.text else "Söz üretilemedi."
 
-        if add_quote(quote):
-            return quote  # Benzersiz ve eklendi
-        else:
-            continue  # Benzerse tekrar üret
+            if add_quote(quote):
+                return quote  # Benzersiz ve eklendi
+            else:
+                continue  # Benzerse tekrar üret
 
-    return "⚠️ Farklı bir söz üretilemedi."
+        return get_random_quote_from_file()
+
+    except Exception as e:
+        if "429" in str(e):  # kotayı aşarsa
+            return get_random_quote_from_file()
+        return "Söz üretilemedi, lütfen tekrar deneyin."
+
+
+def get_random_quote_from_file():
+    # Dosyadan tüm satırları oku
+    with open(REQUOTES_FILE, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+    
+    if not lines:
+        return "Söz kalmadı, lütfen dosyayı doldurun."
+    
+    # Rastgele bir satır seç
+    chosen = random.choice(lines).strip()
+    
+    # Dosyaya yazarken seçilen satırı çıkar
+    lines.remove(chosen + "\n")  # satır sonu ile eşleşme için
+    
+    # Güncellenmiş listeyi dosyaya geri yaz
+    with open(REQUOTES_FILE, "w", encoding="utf-8") as f:
+        f.writelines(lines)
+    
+    return chosen
+
 
 # Örnek çalıştırma
 if __name__ == "__main__":
