@@ -69,8 +69,12 @@ def generate_quote():
         theme = random.choice(themes)
         style = random.choice(styles)
         format_type = random.choice(formats)
-        prompt = f"{theme} temalı, {style} bir tarzda, {format_type} olacak şekilde ÖZGÜN ve kısa bir motivasyon sözü üret. "
-        f"Klişe olmasın. Daha önce görülmemiş gibi hissettirsin."
+        prompt = prompt = f"""
+        '{theme}' temalı, {style} bir tarzda, {format_type} olacak şekilde ÖZGÜN, KISA ve NET bir motivasyon sözü üret.
+        Lütfen sadece TEK CÜMLE olsun ve 20 kelimeden uzun olmasın.
+        Klişe olmasın, yaratıcı olsun.
+        """
+
         prompt += "\n".join([f"- {quote}" for quote in example_quotes])
 
         response = model.generate_content(prompt)
